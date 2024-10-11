@@ -20,10 +20,11 @@
     </section>
 
     <!-- 모달 이미지 뷰어 -->
+    <div class="modal-overlay"></div> <!-- 모달 배경 -->
     <div id="imageModal" class="modal">
         <span class="close">&times;</span>
-        <img class="modal-content" id="modalImage">
-        <div id="caption"></div>
+        <img id="modalImage" class="modal-content">
+        <div id="caption"></div> <!-- 중앙에 텍스트 표시 -->
     </div>
 
     <script src="firebase.js" type="module"></script>
