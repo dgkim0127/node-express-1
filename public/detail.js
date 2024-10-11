@@ -6,7 +6,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
     window.location.href = '/dashboard.html';  // 홈(dashboard.html)으로 이동
 });
 
-// 우클릭(컨텍스트 메뉴) 비활성화
+// 우클릭(컨텍스트 메뉴) 비활성화 (이미지에만 적용)
 document.addEventListener('contextmenu', function (e) {
     if (e.target.tagName === 'IMG') {  // 이미지만 우클릭 방지
         e.preventDefault();  // 우클릭 방지
@@ -15,19 +15,16 @@ document.addEventListener('contextmenu', function (e) {
 
 // PrintScreen, Ctrl+S, Ctrl+P 등의 단축키 방지
 document.addEventListener('keydown', function (e) {
-    // PrintScreen 방지
     if (e.key === 'PrintScreen') {
         alert("캡처는 허용되지 않습니다!");
         e.preventDefault();
     }
-    
-    // Ctrl+S (저장 방지)
+
     if ((e.ctrlKey && e.key === 's') || (e.ctrlKey && e.key === 'S')) {
         alert("페이지 저장이 허용되지 않습니다.");
         e.preventDefault();
     }
 
-    // Ctrl+P (인쇄 방지)
     if ((e.ctrlKey && e.key === 'p') || (e.ctrlKey && e.key === 'P')) {
         alert("페이지 인쇄가 허용되지 않습니다.");
         e.preventDefault();
@@ -95,7 +92,7 @@ async function loadPostDetail() {
                 console.error('로그인된 사용자 정보가 없습니다.');
             }
 
-            // 이미지 클릭 시 모달 열기 (이미지 저장 방지는 유지, 클릭은 가능하게)
+            // 이미지 클릭 시 모달 열기
             document.querySelectorAll('.gallery-image').forEach(image => {
                 image.style.pointerEvents = 'auto';  // 이미지 클릭 가능하게 설정
                 image.addEventListener('click', () => {
@@ -122,17 +119,22 @@ function openModal(imageSrc, productNumber) {
     captionText.innerHTML = productNumber; // 캡션 설정
 
     // 모달 창 바깥쪽을 클릭하면 모달 닫기
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = "none";
-        }
+    const overlay = document.querySelector('.modal-overlay');
+    overlay.style.display = "block";  // 배경 활성화
+    overlay.addEventListener('click', () => {
+        closeModal();
     });
 }
 
 // 모달 닫기 (X 버튼 클릭 시)
 document.querySelector('.close').addEventListener('click', () => {
-    document.getElementById('imageModal').style.display = "none"; // 모달 숨기기
+    closeModal();
 });
+
+function closeModal() {
+    document.getElementById('imageModal').style.display = "none"; // 모달 숨기기
+    document.querySelector('.modal-overlay').style.display = "none";  // 배경 숨기기
+}
 
 // 페이지 로드 시 게시물 상세 정보 불러오기
 document.addEventListener('DOMContentLoaded', loadPostDetail);
